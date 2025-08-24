@@ -1,0 +1,206 @@
+{
+  "weeks": [
+    {
+      "week": 30,
+      "items": [
+        {"category": "Kött & Kyckling", "item": "Kycklingfiléer", "amount": "600g"},
+        {"category": "Kött & Kyckling", "item": "Fläskkarré", "amount": "500g"},
+        {"category": "Kött & Kyckling", "item": "Kycklingfärs", "amount": "400g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Paprika", "amount": "3 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Morötter", "amount": "4 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Broccoli", "amount": "1 huvud"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Blomkål", "amount": "1 huvud"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Rostad paprika", "amount": "2 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Rotfrukter (morot, palsternacka, kålrot)", "amount": "600g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Sallad", "amount": "1 huvud"},
+        {"category": "Kolhydrater", "item": "Zucchinipasta", "amount": "2 st"},
+        {"category": "Kolhydrater", "item": "Tortillabröd", "amount": "8 st"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri grädde", "amount": "2 dl"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri ost", "amount": "100 g"},
+        {"category": "Övrigt", "item": "Svarta bönor", "amount": "1 burk"},
+        {"category": "Övrigt", "item": "Tacokrydda", "amount": ""},
+        {"category": "Övrigt", "item": "Lingonsylt", "amount": "1 liten burk"},
+        {"category": "Övrigt", "item": "Olivolja", "amount": ""}
+      ]
+    },
+    {
+      "week": 31,
+      "items": [
+        {"category": "Kött & Kyckling", "item": "Kycklingfärs", "amount": "600g"},
+        {"category": "Kött & Kyckling", "item": "Korv (laktos- och nötfri)", "amount": "400g"},
+        {"category": "Kött & Kyckling", "item": "Kycklingfilé", "amount": "500g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Zucchini", "amount": "2 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Paprika", "amount": "3 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Broccoli", "amount": "1 huvud"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Blomkål", "amount": "1 huvud"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Tomater (utan kärnor)", "amount": "3 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Sallad", "amount": "1 huvud"},
+        {"category": "Kolhydrater", "item": "Blomkålsris", "amount": "500g"},
+        {"category": "Kolhydrater", "item": "Tortillabröd", "amount": "8 st"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri ost", "amount": "150 g"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri grädde", "amount": "2 dl"},
+        {"category": "Övrigt", "item": "Tacokrydda", "amount": ""},
+        {"category": "Övrigt", "item": "Avokado/guacamole", "amount": "2 st"},
+        {"category": "Övrigt", "item": "Lingonsylt", "amount": "1 liten burk"},
+        {"category": "Övrigt", "item": "Olivolja", "amount": ""}
+      ]
+    },
+    {
+      "week": 32,
+      "items": [
+        {"category": "Kött & Kyckling", "item": "Kycklingfilé", "amount": "600g"},
+        {"category": "Kött & Kyckling", "item": "Kycklingfärs", "amount": "400g"},
+        {"category": "Kött & Kyckling", "item": "Fläskkarré", "amount": "500g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Kokosmjölk", "amount": "1 burk"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Morötter", "amount": "4 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Blomkål", "amount": "1 huvud"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Broccoli", "amount": "1 huvud"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Zucchini", "amount": "2 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Tomater (utan kärnor)", "amount": "3 st"},
+        {"category": "Kolhydrater", "item": "Zucchinipasta", "amount": "2 st"},
+        {"category": "Kolhydrater", "item": "Tortillabröd", "amount": "8 st"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri grädde", "amount": "2 dl"},
+        {"category": "Övrigt", "item": "Tacokrydda", "amount": ""},
+        {"category": "Övrigt", "item": "Avokado/guacamole", "amount": "2 st"},
+        {"category": "Övrigt", "item": "Olivolja", "amount": ""}
+      ]
+    },
+    {
+      "week": 33,
+      "items": [
+        {"category": "Kött & Kyckling", "item": "Kycklingfilé", "amount": "600g"},
+        {"category": "Kött & Kyckling", "item": "Fläskkarré", "amount": "500g"},
+        {"category": "Kött & Kyckling", "item": "Kycklingfärs", "amount": "400g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Broccoli", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Paprika", "amount": "3 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Blomkål", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Zucchini", "amount": "2 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Sallad", "amount": "1 st"},
+        {"category": "Kolhydrater", "item": "Zucchinipasta", "amount": "2 st"},
+        {"category": "Kolhydrater", "item": "Tortillabröd", "amount": "8 st"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri grädde", "amount": "2 dl"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri ost", "amount": "150 g"},
+        {"category": "Övrigt", "item": "Tacokrydda", "amount": ""},
+        {"category": "Övrigt", "item": "Avokado/guacamole", "amount": "2 st"},
+        {"category": "Övrigt", "item": "Olivolja", "amount": ""}
+      ]
+    },
+    {
+      "week": 34,
+      "items": [
+        {"category": "Kött & Kyckling", "item": "Kycklingfärs", "amount": "600g"},
+        {"category": "Kött & Kyckling", "item": "Korv (laktos- och nötfri)", "amount": "400g"},
+        {"category": "Kött & Kyckling", "item": "Kycklingfilé", "amount": "500g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Zucchini", "amount": "2 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Paprika", "amount": "3 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Broccoli", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Blomkål", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Tomater (utan kärnor)", "amount": "3 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Sallad", "amount": "1 st"},
+        {"category": "Kolhydrater", "item": "Blomkålsris", "amount": "500g"},
+        {"category": "Kolhydrater", "item": "Tortillabröd", "amount": "8 st"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri ost", "amount": "150 g"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri grädde", "amount": "2 dl"},
+        {"category": "Övrigt", "item": "Tacokrydda", "amount": ""},
+        {"category": "Övrigt", "item": "Avokado/guacamole", "amount": "2 st"},
+        {"category": "Övrigt", "item": "Lingonsylt", "amount": "1 liten burk"},
+        {"category": "Övrigt", "item": "Olivolja", "amount": ""}
+      ]
+    },
+    {
+      "week": 35,
+      "items": [
+        {"category": "Kött & Kyckling", "item": "Kycklingfilé", "amount": "600g"},
+        {"category": "Kött & Kyckling", "item": "Kycklingfärs", "amount": "400g"},
+        {"category": "Kött & Kyckling", "item": "Fläskkarré", "amount": "500g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Kokosmjölk", "amount": "1 burk"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Morötter", "amount": "4 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Blomkål", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Broccoli", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Zucchini", "amount": "2 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Tomater (utan kärnor)", "amount": "3 st"},
+        {"category": "Kolhydrater", "item": "Zucchinipasta", "amount": "2 st"},
+        {"category": "Kolhydrater", "item": "Tortillabröd", "amount": "8 st"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri grädde", "amount": "2 dl"},
+        {"category": "Övrigt", "item": "Tacokrydda", "amount": ""},
+        {"category": "Övrigt", "item": "Avokado/guacamole", "amount": "2 st"},
+        {"category": "Övrigt", "item": "Olivolja", "amount": ""}
+      ]
+    },
+    {
+      "week": 36,
+      "items": [
+        {"category": "Kött & Kyckling", "item": "Kycklingfärs", "amount": "600g"},
+        {"category": "Kött & Kyckling", "item": "Korv (laktos- och nötfri)", "amount": "400g"},
+        {"category": "Kött & Kyckling", "item": "Kycklingfilé", "amount": "500g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Zucchini", "amount": "2 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Paprika", "amount": "3 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Broccoli", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Blomkål", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Sallad", "amount": "1 st"},
+        {"category": "Kolhydrater", "item": "Tortillabröd", "amount": "8 st"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri grädde", "amount": "2 dl"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri ost", "amount": "150 g"},
+        {"category": "Övrigt", "item": "Tacokrydda", "amount": ""},
+        {"category": "Övrigt", "item": "Avokado/guacamole", "amount": "2 st"},
+        {"category": "Övrigt", "item": "Olivolja", "amount": ""}
+      ]
+    },
+    {
+      "week": 37,
+      "items": [
+        {"category": "Kött & Kyckling", "item": "Kycklingfilé", "amount": "600g"},
+        {"category": "Kött & Kyckling", "item": "Kycklingfärs", "amount": "400g"},
+        {"category": "Kött & Kyckling", "item": "Fläskkarré", "amount": "500g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Kokosmjölk", "amount": "1 burk"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Morötter", "amount": "4 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Blomkål", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Broccoli", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Zucchini", "amount": "2 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Tomater (utan kärnor)", "amount": "3 st"},
+        {"category": "Kolhydrater", "item": "Zucchinipasta", "amount": "2 st"},
+        {"category": "Kolhydrater", "item": "Tortillabröd", "amount": "8 st"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri grädde", "amount": "2 dl"},
+        {"category": "Övrigt", "item": "Tacokrydda", "amount": ""},
+        {"category": "Övrigt", "item": "Avokado/guacamole", "amount": "2 st"},
+        {"category": "Övrigt", "item": "Olivolja", "amount": ""}
+      ]
+    },
+    {
+      "week": 38,
+      "items": [
+        {"category": "Kött & Kyckling", "item": "Kycklingfärs", "amount": "600g"},
+        {"category": "Kött & Kyckling", "item": "Korv (laktos- och nötfri)", "amount": "400g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Zucchini", "amount": "2 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Paprika", "amount": "3 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Broccoli", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Blomkål", "amount": "1 st"},
+        {"category": "Kolhydrater", "item": "Tortillabröd", "amount": "8 st"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri grädde", "amount": "2 dl"},
+        {"category": "Övrigt", "item": "Tacokrydda", "amount": ""},
+        {"category": "Övrigt", "item": "Avokado/guacamole", "amount": "2 st"},
+        {"category": "Övrigt", "item": "Olivolja", "amount": ""}
+      ]
+    },
+    {
+      "week": 39,
+      "items": [
+        {"category": "Kött & Kyckling", "item": "Kycklingfilé", "amount": "600g"},
+        {"category": "Kött & Kyckling", "item": "Kycklingfärs", "amount": "400g"},
+        {"category": "Kött & Kyckling", "item": "Fläskkarré", "amount": "500g"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Kokosmjölk", "amount": "1 burk"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Morötter", "amount": "4 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Blomkål", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Broccoli", "amount": "1 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Zucchini", "amount": "2 st"},
+        {"category": "Grönsaker & Rotfrukter", "item": "Tomater (utan kärnor)", "amount": "3 st"},
+        {"category": "Kolhydrater", "item": "Zucchinipasta", "amount": "2 st"},
+        {"category": "Kolhydrater", "item": "Tortillabröd", "amount": "8 st"},
+        {"category": "Mejeri & Ägg", "item": "Laktosfri grädde", "amount": "2 dl"},
+        {"category": "Övrigt", "item": "Tacokrydda", "amount": ""},
+        {"category": "Övrigt", "item": "Avokado/guacamole", "amount": "2 st"},
+        {"category": "Övrigt", "item": "Olivolja", "amount": ""}
+      ]
+    }
+  ]
+}

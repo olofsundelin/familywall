@@ -1,0 +1,131 @@
+/* ShoppingList använder samma panelstil */
+.meal-plan,
+.shopping-list {
+  padding: 0.5rem;
+  background: var(--card);
+  color: var(--text);
+  height: 100%;
+  overflow-y: auto;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  box-sizing: border-box;
+  touch-action: pan-y;
+}
+
+.shopping-list h3 {
+  font-size: 1.1rem; /* samma som MealPlan */
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.25rem;
+}
+
+.shopping-category {
+  margin-bottom: 1rem;
+}
+
+.shopping-category h4 {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: var(--accent);
+  border-bottom: 1px dashed var(--border);
+}
+
+.shopping-category ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.shopping-category li {
+  padding: 2px 0;
+  font-size: 0.9rem;
+}
+
+.shopping-item {
+  margin-bottom: 0.5rem;
+  margin-left: 1rem;
+}
+
+.shopping-item input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.shopping-item .checked, .checked {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Veckoväljare placerad under rubriken som i MealPlan */
+.week-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.add-button {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  font-size: 2.5rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 3.5rem;
+  height: 3.5rem;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* Popup */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-form {
+  background: var(--popup-bg);
+  color: var(--popup-text);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.popup-form input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  background: var(--popup-input-bg);
+  color: var(--popup-text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.mealplan-panel,
+.shoppinglist-panel {
+  overflow: auto;        /* måste kunna scrolla */
+  max-height: 100%;      /* eller en specifik höjd du vill begränsa till */
+  -webkit-overflow-scrolling: touch; /* mjuk scroll på iOS */
+  user-select: none;     /* undvik textmarkering vid drag */
+  border-radius: 12px;   /* valfritt: snygg touch-yta */
+  /* cursor sätts av hooken (grab/grabbing) */
+}

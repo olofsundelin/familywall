@@ -1,0 +1,27 @@
+# syntax=docker/dockerfile:1
+FROM python:3.11-slim AS prod
+WORKDIR /app
+
+# CA-install script (valfritt men rekommenderat)
+COPY docker/install-ca.sh /usr/local/bin/install-ca
+RUN chmod +x /usr/local/bin/install-ca
+
+# Kopiera hela backend-katalogen (AI-koden ligger där)
+COPY backend ./backend
+
+# Installera deps om manifest finns
+# - pyproject.toml (Poetry)
+# - requirements.txt (pip)
+RUN set -eux; \
+    if [ -f backend/pyproject.toml ]; then \
+        pip install --no-cache-dir poetry && \
+        cd backend && poetry install --only main --no-root; \
+    elif [ -f backend/requirements.txt ]; then \
+        pip install --no-cache-dir -r backend/requirements.txt; \
+    else \
+        echo "Inga Python-manifest hittades (pyproject.toml/requirements.txt) – hoppar över dep-installation."; \
+    fi
+
+# Startkommando – ändra vid behov till din faktiska entrypoint
+# Ex: python backend/ai_agent.py  eller  python -m ai.main
+CMD ["python", "backend/ai_agent.py"]

@@ -1,0 +1,17 @@
+# syntax=docker/dockerfile:1
+FROM node:20-bookworm-slim AS prod
+WORKDIR /app
+
+# Installera prod-deps
+COPY backend/package*.json ./backend/
+RUN cd backend && npm ci --only=production
+
+# Kopiera kod
+COPY backend ./backend
+
+# CA-install script
+COPY docker/install-ca.sh /usr/local/bin/install-ca
+RUN chmod +x /usr/local/bin/install-ca
+
+WORKDIR /app/backend
+CMD ["node", "index.js"]

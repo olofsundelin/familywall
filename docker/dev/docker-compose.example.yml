@@ -1,0 +1,112 @@
+version: '3.8'
+
+name: familywall-dev
+
+x-common-env: &common-env
+  NODE_ENV: development
+
+x-node-options: &node-watch
+  # För stabil hot reload i containrar
+  CHOKIDAR_USEPOLLING: "true"
+  WATCHPACK_POLLING: "true"
+  # Slå av openssl-legacy m.m. (behövs normalt inte i Node 20)
+  # NODE_OPTIONS: "--max_old_space_size=4096"
+
+networks:
+  fw:
+    driver: bridge
+
+services:
+  backend:
+    # Se till att din backend-Dockerfile använder FROM node:20-*
+    build:
+      context: ../../backend
+    image: familywall/backend:dev
+    container_name: fw_dev_backend
+    networks: [fw]
+    ports:
+      - "3100:3000"   # http://localhost:3100
+    volumes:
+      - ../../backend:/app
+      # Maskera node_modules så containerinstallerade paket inte skrivs över av värdens mapp
+      - /app/node_modules
+      # Ha samma bild-katalogbeteende som prod (skrivbar i dev)
+      - ./backend/pictures:/app/backend/pictures
+    env_file:
+      - ../../backend/.env   # flytta TOKEN m.m. hit
+    environment:
+      <<: [*common-env, *node-watch]
+      HOME_ASSISTANT_URL: 
+    healthcheck:
+      test: ["CMD-SHELL", "NODE_TLS_REJECT_UNAUTHORIZED=0 node -e \"fetch('https://localhost:3443/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+    command: bash -lc "npm ci && npm run dev"
+
+
+
+  frontend:
+    # Se till att frontend bygger mot Node 20 i Dockerfile
+    build:
+      context: ../../frontend
+      args:
+        # Dev kör mot http backend lokalt. Använd värdnamn istället för hårdkodad IP.
+        REACT_APP_API_BASE_URL: http://localhost:3100
+    image: familywall/frontend:dev
+    container_name: fw_dev_frontend
+    networks: [fw]
+    ports:
+      - "3101:3000"   # http://localhost:3101
+    volumes:
+      - ../../frontend:/app
+      - /app/node_modules
+    environment:
+      <<: [*common-env, *node-watch]
+      HOST: 0.0.0.0
+      # Alternativt sätt om du inte vill bygga om bilden för varje URL-ändring:
+      REACT_APP_API_BASE_URL: http://localhost:3100
+    depends_on:
+      backend:
+        condition: service_healthy
+    command: bash -lc "npm ci && npm start"
+
+  shopping:
+    build:
+      context: ../../shopping-app
+    image: familywall/shopping:dev
+    container_name: fw_dev_shopping
+    networks: [fw]
+    ports:
+      - "3102:3000"   # http://localhost:3102
+    volumes:
+      - ../../shopping-app:/app
+      - /app/node_modules
+    environment:
+      <<: [*common-env, *node-watch]
+      HOST: 0.0.0.0
+      # Om shopping-appen pratar med backend, sätt också en bas-URL:
+      # REACT_APP_API_BASE_URL: http://localhost:3100
+    depends_on:
+      backend:
+        condition: service_healthy
+    command: bash -lc "npm ci && npm start"
+
+  ai:
+    # Lägg till i dev så du kan köra end-to-end
+    build:
+      context: ../../backend
+    image: familywall/ai:dev
+    container_name: fw_dev_ai
+    networks: [fw]
+    env_file:
+      - ../../backend/.env
+    environment:
+      <<: *common-env
+      SCHOOL_LUNCH_URL: http://localhost:3100   # i prod pekar du mot 3443/https
+    command: bash -lc "python3 /app/planera-api.py"
+    ports:
+      - "5001:5001"
+    depends_on:
+      backend:
+        condition: service_healthy

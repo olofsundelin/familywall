@@ -1,0 +1,50 @@
+:root, html, body, .app-container {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans",
+               Ubuntu, Cantarell, "Helvetica Neue", Arial,
+               "Segoe UI Emoji", "Noto Color Emoji", "Apple Color Emoji",
+               sans-serif;
+  font-weight: 400;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased; /* snyggare i Chromium */
+}
+
+/* Sidan: kalender överst, paneler under */
+.app-container {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  min-height: 0;            /* ⬅️ kritiskt i grid/flex */
+}
+
+/* Kalendern + tvåpanelsektion */
+.calendar-section {
+  min-height: 0;
+  touch-action: pan-x;      /* swipe horisontellt */
+}
+
+.sidebar-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  min-height: 0;            /* ⬅️ kritiskt */
+}
+
+/* Wrapper-divarna i App runt komponenterna */
+.sidebar-section > .meal-plan,
+.sidebar-section > .shopping-list {
+  display: grid;
+  min-height: 0;            /* ⬅️ kritiskt */
+}
+
+/* Själva scroll-containrarna inne i komponenterna */
+.meal-plan-container,
+.shopping-list-container {
+  height: 100%;             /* fyll wrappern */
+  min-height: 0;
+  max-height: 100%;
+  overflow: auto;           /* enable scroll */
+  touch-action: pan-y;      /* touch ska vara vertikal scroll */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}

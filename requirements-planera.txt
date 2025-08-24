@@ -1,0 +1,8 @@
+flask
+flask-cors
+python-dotenv
+requests
+openai>=1.0.0
+supabase
+gunicorn
+

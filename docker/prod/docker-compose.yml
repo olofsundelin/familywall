@@ -1,0 +1,117 @@
+name: familywall_prod
+
+x-common-env: &common_env
+  NODE_EXTRA_CA_CERTS: /certs/ca.crt
+  REQUESTS_CA_BUNDLE: /certs/ca.crt
+  SSL_CERT_FILE: /certs/ca.crt
+
+services:
+  backend:
+    build:
+      context: ../..
+      dockerfile: docker/Dockerfile.backend
+    image: familywall/backend:${IMAGE_TAG}
+    container_name: familywall_backend
+    restart: unless-stopped
+    entrypoint: ["/usr/local/bin/install-ca"]
+    command: ["node", "index.js"]
+    environment:
+      <<: *common_env
+      NODE_ENV: production
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ../../certs:/certs:ro
+    ports:
+      - "3443:3443"
+      - "80:3000"
+  ai:
+    build:
+      context: ../..
+      dockerfile: docker/Dockerfile.ai   # eller den du använder för Flask-API:t
+    image: familywall/ai:${IMAGE_TAG}
+    profiles: ["dev"]
+    environment:
+      - FLASK_HOST=0.0.0.0
+      - FLASK_PORT=5001
+      # ev. OPENAI_API_KEY, SUPABASE_URL, SUPABASE_KEY, SCHOOL_LUNCH_URL, ...
+    command: python planera-api.py
+    ports:
+      - "5001:5001"
+    volumes:
+      - ../../certs:/certs:ro
+    depends_on:
+      - backend
+
+  frontend:
+    build:
+      context: ../..
+      dockerfile: docker/Dockerfile.frontend.nginx
+    image: familywall/frontend:${IMAGE_TAG:-local}
+    container_name: familywall_frontend
+    depends_on:
+      backend:
+        condition: service_started
+        required: true
+    entrypoint: ["/usr/local/bin/install-ca"]
+    command: ["nginx","-g","daemon off;"]   # <-- tvinga igång nginx
+    environment:
+      NODE_ENV: production
+      NODE_EXTRA_CA_CERTS: /certs/ca.crt
+      REQUESTS_CA_BUNDLE: /certs/ca.crt
+      SSL_CERT_FILE: /certs/ca.crt
+    healthcheck:
+      test: ["CMD-SHELL","wget -qO- http://localhost/ >/dev/null || exit 1"]  # <-- 80, inte 8081
+      interval: 20s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    volumes:
+      - ../../certs:/certs:ro
+
+  shopping:
+    build:
+      context: ../..
+      dockerfile: shopping-app/Dockerfile
+    image: familywall/shopping:${IMAGE_TAG}
+    container_name: familywall_shopping
+    profiles: ["dev"]
+    restart: unless-stopped
+    entrypoint: ["/usr/local/bin/install-ca"]
+    environment:
+      NODE_ENV: production
+      NODE_EXTRA_CA_CERTS: /certs/ca.crt
+      REQUESTS_CA_BUNDLE: /certs/ca.crt
+      SSL_CERT_FILE: /certs/ca.crt
+    command: >
+      sh -lc '
+        (command -v serve >/dev/null 2>&1 || npm i -g serve);
+        ROOT=$$(dirname "$$(find /app -maxdepth 5 -type f -name index.html | head -n1)");
+        test -n "$$ROOT" || ROOT=/app;
+        echo "Serving $$ROOT on $$PORT";
+        exec serve -s "$$ROOT" -l "$$PORT"
+      '
+    volumes:
+      - ../../certs:/certs:ro
+    ports:
+      - "3002:8081"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8081/ >/dev/null || exit 1"]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+
+
+  db:
+    image: postgres:16-alpine
+    container_name: familywall_db
+    restart: unless-stopped
+    profiles: ["dev"]
+    environment:
+      POSTGRES_USER: familywall
+      POSTGRES_PASSWORD: familywall
+      POSTGRES_DB: familywall
+    volumes:
+      - db_data:/var/lib/postgresql/data

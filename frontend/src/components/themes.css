@@ -1,0 +1,31 @@
+/* themes.css — globala tema-variabler */
+:root {
+  --bg: #ffffff;
+  --text: #111111;
+  --card: #f7f7f8;
+  --border: #e5e5e5;
+  --accent: #1a73e8;
+
+  /* Popup/inputs */
+  --popup-bg: var(--card);
+  --popup-text: var(--text);
+  --popup-input-bg: #f0f0f0;
+}
+
+[data-theme="dark"] {
+  --bg: #141414;
+  --text: #f5f5f5;
+  --card: #1f1f1f;
+  --border: #2a2a2a;
+  --accent: #8fc7ff;
+
+  --popup-bg: #1e1e1e;
+  --popup-text: #f0f0f0;
+  --popup-input-bg: #2a2a2a;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Noto Color Emoji", sans-serif;
+}

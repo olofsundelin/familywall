@@ -1,0 +1,59 @@
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+  background: #ECEDED;   /* matchar bildens bakgrund */
+  min-height: 100dvh;
+}
+
+/* Ta bort onödig padding så bilden kan gå ända ut i kanterna */
+.splash-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* GÖR BILDEN FULLBREDD */
+.splash-logo {
+  width: 100vw;       /* täcker skärmens bredd (t.ex. 1080px) */
+  height: auto;       /* behåll proportioner */
+  max-height: 100dvh; /* gå aldrig högre än skärmen */
+  display: block;
+  object-fit: contain; /* säkerhetsbälte för udda format */
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.splash-text {
+  margin-top: 0.5rem;
+  color: #fff;
+  font-size: clamp(1rem, 2.3vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.splash-hint {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: clamp(0.85rem, 1.7vw, 0.95rem);
+}
+
+.splash-retry {
+  margin-top: 0.25rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+.splash-retry:hover { background: rgba(255, 255, 255, 0.08); }
+.splash-retry:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }

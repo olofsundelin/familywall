@@ -1,0 +1,24 @@
+# ---- build stage ----
+FROM node:20-bookworm-slim AS build
+WORKDIR /app
+# kopiera bara package-filer först för cache
+COPY frontend/package*.json frontend/
+RUN cd frontend && npm ci
+# nu resten av koden
+COPY frontend frontend
+RUN cd frontend && npm run build
+
+# ---- runtime ----
+FROM node:20-bookworm-slim AS runtime
+WORKDIR /app
+RUN npm i -g serve
+# (valfritt) installera din root-CA i containern
+COPY docker/install-ca.sh /usr/local/bin/install-ca
+RUN chmod +x /usr/local/bin/install-ca
+ENTRYPOINT ["/usr/local/bin/install-ca"]
+
+# kopiera bara buildade artefakter
+COPY --from=build /app/frontend/build /app/frontend/build
+ENV PORT=8080
+EXPOSE 8080
+CMD ["sh","-lc","serve -s /app/frontend/build -l $PORT"]

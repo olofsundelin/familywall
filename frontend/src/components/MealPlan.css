@@ -1,0 +1,75 @@
+/* Gemensam panelstil */
+.meal-plan,
+.shopping-list {
+  padding: 0.5rem;
+  background: var(--card);
+  color: var(--text);
+  height: 100%;
+  overflow-y: auto;
+  border-radius: 1px;
+  border: 1px solid var(--border);
+  box-sizing: border-box;
+  touch-action: pan-y;
+}
+
+.meal-plan h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.25rem;
+}
+
+.meal-day {
+  margin-bottom: 0.75rem;
+  border-left: 3px solid var(--accent);
+  padding-left: 0.5rem;
+}
+
+.meal-day h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--accent);
+}
+
+.meal-day .meal {
+  font-size: 0.85rem;
+  margin: 2px 0;
+}
+
+.meal-day .calories {
+  font-size: 0.75rem;
+  color: var(--text);
+  opacity: 0.6;
+}
+
+.week-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.week-selector button {
+  font-size: 1.2rem;
+  background: none;
+  border: none;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.heart-icon {
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-left: 6px;
+  user-select: none;
+}
+.mealplan-panel,
+.shoppinglist-panel {
+  overflow: auto;        /* måste kunna scrolla */
+  max-height: 100%;      /* eller en specifik höjd du vill begränsa till */
+  -webkit-overflow-scrolling: touch; /* mjuk scroll på iOS */
+  user-select: none;     /* undvik textmarkering vid drag */
+  border-radius: 12px;   /* valfritt: snygg touch-yta */
+  /* cursor sätts av hooken (grab/grabbing) */
+}

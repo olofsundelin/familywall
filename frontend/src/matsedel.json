@@ -1,0 +1,474 @@
+{
+  "weeks": [
+    {
+      "week": 30,
+      "days": [
+        {
+          "day": "Måndag",
+          "lunch": null,
+          "dinner": "Kycklingwok med paprika, morot och blomkålsris",
+          "calories_left": 1050
+        },
+        {
+          "day": "Tisdag",
+          "lunch": null,
+          "dinner": "Köttbullar med zucchinipasta och tomatsås utan kärnor",
+          "calories_left": 1000
+        },
+        {
+          "day": "Onsdag",
+          "lunch": null,
+          "dinner": "Pannkakor med bär och laktosfri grädde",
+          "calories_left": 1050
+        },
+        {
+          "day": "Torsdag",
+          "lunch": null,
+          "dinner": "Ugnsbakad kycklingfilé med blomkålsmos och broccoli",
+          "calories_left": 950
+        },
+        {
+          "day": "Fredag",
+          "lunch": null,
+          "dinner": "Tacos med kycklingfärs, grönsaker och laktosfri ost",
+          "calories_left": 1050
+        },
+        {
+          "day": "Lördag",
+          "lunch": "Tacogratäng med kyckling och laktosfri ost",
+          "dinner": "Grillad fläskkarré med rostad paprika och blomkålsris",
+          "calories_left": 450
+        },
+        {
+          "day": "Söndag",
+          "lunch": "Vegetarisk enchiladas med svarta bönor och grönsaker",
+          "dinner": "Grillad kyckling med sallad och ugnsrostade rotfrukter",
+          "calories_left": 450
+        }
+      ]
+    },
+    {
+      "week": 31,
+      "days": [
+        {
+          "day": "Måndag",
+          "lunch": null,
+          "dinner": "Kycklingfärsbiffar med blomkålsmos och grönsaker",
+          "calories_left": 1050
+        },
+        {
+          "day": "Tisdag",
+          "lunch": null,
+          "dinner": "Korv Stroganoff med blomkålsris",
+          "calories_left": 1050
+        },
+        {
+          "day": "Onsdag",
+          "lunch": null,
+          "dinner": "Pannkakor med äppelbitar och laktosfri grädde",
+          "calories_left": 1050
+        },
+        {
+          "day": "Torsdag",
+          "lunch": null,
+          "dinner": "Ugnsbakad kyckling med ratatouille",
+          "calories_left": 950
+        },
+        {
+          "day": "Fredag",
+          "lunch": null,
+          "dinner": "Tacos med nötfärs, grönsaker och guacamole",
+          "calories_left": 1050
+        },
+        {
+          "day": "Lördag",
+          "lunch": "Fläskpalt med smör och lingon",
+          "dinner": "Grillat kött med blomkålsris och sallad",
+          "calories_left": 450
+        },
+        {
+          "day": "Söndag",
+          "lunch": "Vegetarisk lasagne med zucchini och aubergine",
+          "dinner": "Grillad kyckling med sallad",
+          "calories_left": 450
+        }
+      ]
+    },
+    {
+      "week": 32,
+      "days": [
+        {
+          "day": "Måndag",
+          "lunch": null,
+          "dinner": "Kycklinggryta med kokosmjölk, blomkålsris och grönsaker",
+          "calories_left": 1050
+        },
+        {
+          "day": "Tisdag",
+          "lunch": null,
+          "dinner": "Köttfärslimpa med blomkålsmos och ångade morötter",
+          "calories_left": 1000
+        },
+        {
+          "day": "Onsdag",
+          "lunch": null,
+          "dinner": "Pannkakor med hallon och laktosfri grädde",
+          "calories_left": 1050
+        },
+        {
+          "day": "Torsdag",
+          "lunch": null,
+          "dinner": "Ugnsbakad fläskkarré med ratatouille",
+          "calories_left": 950
+        },
+        {
+          "day": "Fredag",
+          "lunch": null,
+          "dinner": "Tacos med kycklingfärs och salsa",
+          "calories_left": 1050
+        },
+        {
+          "day": "Lördag",
+          "lunch": "Enchiladas med kyckling och grönsaker",
+          "dinner": "Grillat kött med blomkålsris och grönsaker",
+          "calories_left": 450
+        },
+        {
+          "day": "Söndag",
+          "lunch": "Vegetarisk bolognese med zucchini-pasta",
+          "dinner": "Fläsk med ugnsrostade rotfrukter",
+          "calories_left": 450
+        }
+      ]
+    },
+    {
+      "week": 33,
+      "days": [
+        {
+          "day": "Måndag",
+          "lunch": null,
+          "dinner": "Kycklingwok med broccoli, paprika och blomkålsris",
+          "calories_left": 1050
+        },
+        {
+          "day": "Tisdag",
+          "lunch": null,
+          "dinner": "Köttbullar med zucchinipasta och tomatsås utan kärnor",
+          "calories_left": 1000
+        },
+        {
+          "day": "Onsdag",
+          "lunch": null,
+          "dinner": "Pannkakor med blåbär och laktosfri grädde",
+          "calories_left": 1050
+        },
+        {
+          "day": "Torsdag",
+          "lunch": null,
+          "dinner": "Ugnsbakad kyckling med blomkålsmos och sallad",
+          "calories_left": 950
+        },
+        {
+          "day": "Fredag",
+          "lunch": null,
+          "dinner": "Tacos med nötfärs, guacamole och sallad",
+          "calories_left": 1050
+        },
+        {
+          "day": "Lördag",
+          "lunch": "Tacogratäng med kyckling och laktosfri ost",
+          "dinner": "Grillad fläskkarré med rostad paprika och sallad",
+          "calories_left": 450
+        },
+        {
+          "day": "Söndag",
+          "lunch": "Vegetarisk enchiladas med svarta bönor",
+          "dinner": "Grillad kyckling med ugnsrostade rotfrukter",
+          "calories_left": 450
+        }
+      ]
+    },
+    {
+      "week": 34,
+      "days": [
+        {
+          "day": "Måndag",
+          "lunch": null,
+          "dinner": "Kycklingfärsbiffar med blomkålsmos och grönsaker",
+          "calories_left": 1050
+        },
+        {
+          "day": "Tisdag",
+          "lunch": null,
+          "dinner": "Korv Stroganoff med blomkålsris",
+          "calories_left": 1050
+        },
+        {
+          "day": "Onsdag",
+          "lunch": null,
+          "dinner": "Pannkakor med äppelbitar och laktosfri grädde",
+          "calories_left": 1050
+        },
+        {
+          "day": "Torsdag",
+          "lunch": null,
+          "dinner": "Ugnsbakad lax ersatt med kyckling med ratatouille",
+          "calories_left": 950
+        },
+        {
+          "day": "Fredag",
+          "lunch": null,
+          "dinner": "Tacos med kycklingfärs och salsa",
+          "calories_left": 1050
+        },
+        {
+          "day": "Lördag",
+          "lunch": "Fläskpalt med smör och lingon",
+          "dinner": "Grillat kött med blomkålsris och sallad",
+          "calories_left": 450
+        },
+        {
+          "day": "Söndag",
+          "lunch": "Vegetarisk lasagne med zucchini och aubergine",
+          "dinner": "Grillad kyckling med sallad",
+          "calories_left": 450
+        }
+      ]
+    },
+    {
+      "week": 35,
+      "days": [
+        {
+          "day": "Måndag",
+          "lunch": null,
+          "dinner": "Kycklinggryta med kokosmjölk, blomkålsris och grönsaker",
+          "calories_left": 1050
+        },
+        {
+          "day": "Tisdag",
+          "lunch": null,
+          "dinner": "Köttfärslimpa med blomkålsmos och ångade morötter",
+          "calories_left": 1000
+        },
+        {
+          "day": "Onsdag",
+          "lunch": null,
+          "dinner": "Pannkakor med hallon och laktosfri grädde",
+          "calories_left": 1050
+        },
+        {
+          "day": "Torsdag",
+          "lunch": null,
+          "dinner": "Ugnsbakad fläskkarré med ratatouille",
+          "calories_left": 950
+        },
+        {
+          "day": "Fredag",
+          "lunch": null,
+          "dinner": "Tacos med nötfärs och grönsaker",
+          "calories_left": 1050
+        },
+        {
+          "day": "Lördag",
+          "lunch": "Enchiladas med kyckling och grönsaker",
+          "dinner": "Grillat kött med blomkålsris och grönsaker",
+          "calories_left": 450
+        },
+        {
+          "day": "Söndag",
+          "lunch": "Vegetarisk bolognese med zucchini-pasta",
+          "dinner": "Fläsk med ugnsrostade rotfrukter",
+          "calories_left": 450
+        }
+      ]
+    },
+    {
+      "week": 36,
+      "days": [
+        {
+          "day": "Måndag",
+          "lunch": null,
+          "dinner": "Kycklingfärsbiffar med blomkålsmos och broccoli",
+          "calories_left": 1050
+        },
+        {
+          "day": "Tisdag",
+          "lunch": null,
+          "dinner": "Korvgryta med blomkålsris och grönsaker",
+          "calories_left": 1050
+        },
+        {
+          "day": "Onsdag",
+          "lunch": null,
+          "dinner": "Pannkakor med blåbär och laktosfri grädde",
+          "calories_left": 1050
+        },
+        {
+          "day": "Torsdag",
+          "lunch": null,
+          "dinner": "Ugnsbakad kyckling med ugnsrostade grönsaker",
+          "calories_left": 950
+        },
+        {
+          "day": "Fredag",
+          "lunch": null,
+          "dinner": "Tacos med kycklingfärs och salsa",
+          "calories_left": 1050
+        },
+        {
+          "day": "Lördag",
+          "lunch": "Fläskpalt med lingon och smör",
+          "dinner": "Tacogratäng med kyckling och grönsaker",
+          "calories_left": 450
+        },
+        {
+          "day": "Söndag",
+          "lunch": "Vegetarisk lasagne med zucchini",
+          "dinner": "Grillad fläskkarré med sallad",
+          "calories_left": 450
+        }
+      ]
+    },
+    {
+      "week": 37,
+      "days": [
+        {
+          "day": "Måndag",
+          "lunch": null,
+          "dinner": "Kycklinggryta med kokosmjölk och grönsaker",
+          "calories_left": 1050
+        },
+        {
+          "day": "Tisdag",
+          "lunch": null,
+          "dinner": "Köttbullar med blomkålsmos och ångade grönsaker",
+          "calories_left": 1000
+        },
+        {
+          "day": "Onsdag",
+          "lunch": null,
+          "dinner": "Pannkakor med jordgubbar och laktosfri grädde",
+          "calories_left": 1050
+        },
+        {
+          "day": "Torsdag",
+          "lunch": null,
+          "dinner": "Ugnsbakad kyckling med ratatouille utan kärnfrukt",
+          "calories_left": 950
+        },
+        {
+          "day": "Fredag",
+          "lunch": null,
+          "dinner": "Tacos med nötfärs och guacamole",
+          "calories_left": 1050
+        },
+        {
+          "day": "Lördag",
+          "lunch": "Tacokyckling med guacamole och sallad",
+          "dinner": "Grillat kött med blomkålsris och grönsaker",
+          "calories_left": 450
+        },
+        {
+          "day": "Söndag",
+          "lunch": "Enchiladas med kyckling och grönsaker",
+          "dinner": "Fläsk med ugnsrostade rotfrukter",
+          "calories_left": 450
+        }
+      ]
+    },
+    {
+      "week": 38,
+      "days": [
+        {
+          "day": "Måndag",
+          "lunch": null,
+          "dinner": "Kycklingfärsbiffar med blomkålsmos och ångade grönsaker",
+          "calories_left": 1050
+        },
+        {
+          "day": "Tisdag",
+          "lunch": null,
+          "dinner": "Korv stroganoff med blomkålsris",
+          "calories_left": 1050
+        },
+        {
+          "day": "Onsdag",
+          "lunch": null,
+          "dinner": "Pannkakor med hallon och laktosfri grädde",
+          "calories_left": 1050
+        },
+        {
+          "day": "Torsdag",
+          "lunch": null,
+          "dinner": "Ugnsbakad kyckling med blomkålsmos och ratatouille",
+          "calories_left": 950
+        },
+        {
+          "day": "Fredag",
+          "lunch": null,
+          "dinner": "Tacos med kycklingfärs och salsa",
+          "calories_left": 1050
+        },
+        {
+          "day": "Lördag",
+          "lunch": "Fläskpalt med smör och lingon",
+          "dinner": "Tacogratäng med kyckling och sallad",
+          "calories_left": 450
+        },
+        {
+          "day": "Söndag",
+          "lunch": "Vegetarisk lasagne med zucchini och aubergine",
+          "dinner": "Grillad kyckling med ugnsrostade grönsaker",
+          "calories_left": 450
+        }
+      ]
+    },
+    {
+      "week": 39,
+      "days": [
+        {
+          "day": "Måndag",
+          "lunch": null,
+          "dinner": "Kycklinggryta med kokosmjölk och grönsaker",
+          "calories_left": 1050
+        },
+        {
+          "day": "Tisdag",
+          "lunch": null,
+          "dinner": "Köttfärslimpa med blomkålsmos och broccoli",
+          "calories_left": 1000
+        },
+        {
+          "day": "Onsdag",
+          "lunch": null,
+          "dinner": "Pannkakor med bär och laktosfri grädde",
+          "calories_left": 1050
+        },
+        {
+          "day": "Torsdag",
+          "lunch": null,
+          "dinner": "Ugnsbakad kyckling med ratatouille",
+          "calories_left": 950
+        },
+        {
+          "day": "Fredag",
+          "lunch": null,
+          "dinner": "Tacos med nötfärs och grönsaker",
+          "calories_left": 1050
+        },
+        {
+          "day": "Lördag",
+          "lunch": "Enchiladas med kyckling och grönsaker",
+          "dinner": "Grillat kött med blomkålsris och sallad",
+          "calories_left": 450
+        },
+        {
+          "day": "Söndag",
+          "lunch": "Vegetarisk bolognese med zucchini-pasta",
+          "dinner": "Fläsk med ugnsrostade rotfrukter",
+          "calories_left": 450
+        }
+      ]
+    }
+  ]
+}

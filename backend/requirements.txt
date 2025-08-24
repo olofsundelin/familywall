@@ -1,0 +1,12 @@
+openai
+supabase
+flask
+flask-cors
+requests
+feedparser
+python-dotenv
+icalendar
+python-dateutil
+pytz
+gunicorn
+recurring-ical-events

@@ -94,3 +94,4 @@ window.FW_CONFIG = {
 ## Licens
 TBD.
 
+![Bild på Family Wall](image-1.png)

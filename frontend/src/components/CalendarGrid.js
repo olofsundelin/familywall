@@ -1,5 +1,6 @@
 // src/components/CalendarGrid.js
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import { QRCodeCanvas } from 'qrcode.react';
 import {
   startOfWeek,
   endOfWeek,
@@ -100,6 +101,34 @@ async function fetchDayInfo(dateStr) {
     return { isFlagDay: false, isRedDay: false, holidayName: null };
   }
 }
+// —— Karta overlay ——
+const parseLatLng = (txt = '') => {
+  // Fångar "63.9, 20.56" eller "lat:63.9 lon:20.56"
+  const m = txt.match(/(-?\d{1,3}\.\d+)\s*[, ]\s*(-?\d{1,3}\.\d+)/) ||
+            txt.match(/lat[:=]\s*(-?\d{1,3}\.\d+).*?(lon|lng)[:=]\s*(-?\d{1,3}\.\d+)/i);
+  if (!m) return null;
+  // match 1,2 eller 1,3 beroende på regex-variant
+  const lat = parseFloat(m[1]);
+  const lng = parseFloat(m[3] || m[2]);
+  if (isNaN(lat) || isNaN(lng)) return null;
+  return { lat, lng };
+};
+
+const getMapsEmbedUrl = (locationText = '') => {
+  const coords = parseLatLng(locationText);
+  if (coords) {
+    const q = `${coords.lat},${coords.lng}`;
+    return `https://www.google.com/maps?q=${encodeURIComponent(q)}&output=embed`;
+  }
+  // fallback: sök strängen
+  return `https://www.google.com/maps?q=${encodeURIComponent(locationText)}&output=embed`;
+};
+
+const getMapsLink = (locationText = '') => {
+  const coords = parseLatLng(locationText);
+  const q = coords ? `${coords.lat},${coords.lng}` : locationText;
+  return `https://www.google.com/maps?q=${encodeURIComponent(q)}`;
+};
 const ymdLocal = (d) => {
   const x = new Date(d);
   return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
@@ -156,6 +185,7 @@ function CalendarGrid() {
   });
 
   // === State ===
+  const [mapOverlay, setMapOverlay] = useState({ open: false, title: '', url: '' });
   const [currentStartDate, setCurrentStartDate] = useState(() =>
     startOfWeek(new Date(), { weekStartsOn: 1 })
   );
@@ -606,30 +636,49 @@ function CalendarGrid() {
               })}
 
             {/* 2) Övriga “vanliga” event */}
-            {nonSchool.map((event, idx) => {
-              const { icon, color } = getEventStyle(event.summary);
-              const startStr = event.start?.dateTime || event.start?.date || event.start;
-              const borderColor = colorFor(event.source); // t.ex. 'skola24', 'ics', 'birthday'
-              return (
-                <div
-                  key={`e-${idx}`}
-                  className="event"
-                  style={{ backgroundColor: color, borderLeft: `4px solid ${borderColor}` }}
-                  title={event.source}
-                >
-                  <div className="event-meta">
-                    {!event.summary?.startsWith('🎂') && (
-                      <span className="event-time">{timeStr(startStr)}</span>
-                    )}
-                    {icon && <span className="event-icon">{icon}</span>}
-                  </div>
-                  <div className="event-title">{event.summary}</div>
-                </div>
-              );
-            })}
-          </div>
-        );
-      }
+      {nonSchool.map((event, idx) => {
+  const { icon, color } = getEventStyle(event.summary);
+  const startStr = event.start?.dateTime || event.start?.date || event.start;
+  const borderColor = colorFor(event.source); // t.ex. 'skola24', 'ics', 'birthday'
+  return (
+    <div
+      key={`e-${idx}`}
+      className="event"
+      style={{ backgroundColor: color, borderLeft: `4px solid ${borderColor}` }}
+      title={event.source}
+    >
+      <div className="event-meta">
+        {!event.summary?.startsWith('🎂') && (
+          <span className="event-time">{timeStr(startStr)}</span>
+        )}
+        {icon && <span className="event-icon">{icon}</span>}
+
+        {event.location && (
+          <button
+            className="event-locbtn"
+            title={event.location}
+            onClick={(e) => {
+              e.stopPropagation();
+              setMapOverlay({
+                open: true,
+                title: event.summary || 'Plats',
+                address: event.location,
+                url: getMapsEmbedUrl(event.location),
+                link: getMapsLink(event.location),
+              });
+            }}
+            aria-label="Visa plats">📍</button>
+        )}
+      </div>
+
+      <div className="event-title">{event.summary}</div>
+    </div>
+  );
+})}
+</div>
+);
+
+}
       day = addDays(day, 7);
     }
     return cells;
@@ -823,7 +872,45 @@ function CalendarGrid() {
       </div>
 
       <div className="calendar-grid">{[...renderDays(), ...renderCells()]}</div>
+   {mapOverlay.open && (
+  <div
+    className="map-overlay"
+    role="dialog"
+    aria-modal="true"
+    onClick={() => setMapOverlay({ open: false, title: '', url: '' })}
+  >
+    <div className="map-dialog" onClick={(e) => e.stopPropagation()}>
+      <div className="map-header">
+        <div className="map-title">📍 {mapOverlay.title}</div>
+        <button
+          className="map-close"
+          onClick={() => setMapOverlay({ open: false, title: '', url: '' })}
+          aria-label="Stäng karta"
+        >
+          ✕
+        </button>
+      </div>
+      <div className="map-body">
+  <iframe
+    src={mapOverlay.url}
+    title="Karta"
+    style={{ width: '100%', height: '100%', border: 0 }}
+    referrerPolicy="no-referrer-when-downgrade"
+  />
+  <div className="map-side">
+    <div className="qr-title">Öppna i mobilen</div>
+    {mapOverlay.link ? (
+  <QRCodeCanvas value={mapOverlay.link} size={220} includeMargin className="map-qr" />
+) : (
+  <div style={{opacity:.7, fontSize:'.9rem'}}>Ingen länk att koda</div>
+)}
+    <div className="qr-hint">Skanna för att få vägbeskrivning</div>
+  </div>
+</div>
     </div>
+  </div>
+)} 
+   </div>
   );
 }
 

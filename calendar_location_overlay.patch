@@ -1,0 +1,182 @@
+diff --git a/frontend/src/components/CalendarGrid.js b/frontend/src/components/CalendarGrid.js
+--- a/frontend/src/components/CalendarGrid.js
++++ b/frontend/src/components/CalendarGrid.js
+@@
+-const API_BASE = process.env.REACT_APP_API_BASE_URL || '';
++const API_BASE = process.env.REACT_APP_API_BASE_URL || '';
++
++// —— Karta/position helpers ——
++const parseLatLng = (txt = '') => {
++  const m =
++    txt.match(/(-?\d{1,3}\.\d+)\s*[, ]\s*(-?\d{1,3}\.\d+)/) ||
++    txt.match(/lat[:=]\s*(-?\d{1,3}\.\d+).*?(lon|lng)[:=]\s*(-?\d{1,3}\.\d+)/i);
++  if (!m) return null;
++  const lat = parseFloat(m[1]);
++  const lng = parseFloat(m[3] || m[2]);
++  if (isNaN(lat) || isNaN(lng)) return null;
++  return { lat, lng };
++};
++
++const getMapsEmbedUrl = (locationText = '') => {
++  const coords = parseLatLng(locationText);
++  const q = coords ? `${coords.lat},${coords.lng}` : locationText;
++  return `https://www.google.com/maps?q=${encodeURIComponent(q)}&output=embed`;
++};
++
++const getMapsLink = (locationText = '') => {
++  const coords = parseLatLng(locationText);
++  const q = coords ? `${coords.lat},${coords.lng}` : locationText;
++  return `https://www.google.com/maps?q=${encodeURIComponent(q)}`;
++};
+@@
+ function CalendarGrid() {
+@@
+-  const [scheduleCfg, setScheduleCfg] = useState({
++  const [scheduleCfg, setScheduleCfg] = useState({
+     colorRules: [],
+     classLabels: {},
+   });
++  // Karta/overlay‑state
++  const [mapOverlay, setMapOverlay] = useState({
++    open: false,
++    title: '',
++    address: '',
++    url: '',
++    link: '',
++  });
+@@
+   }, [isMaximized]);
+ 
++  // ESC + auto‑stäng overlay (2 min) när den är öppen
++  useEffect(() => {
++    if (!mapOverlay.open) return undefined;
++    const close = () =>
++      setMapOverlay({ open: false, title: '', address: '', url: '', link: '' });
++    const onKey = (e) => e.key === 'Escape' && close();
++    window.addEventListener('keydown', onKey);
++    const t = setTimeout(close, 2 * 60 * 1000);
++    return () => {
++      window.removeEventListener('keydown', onKey);
++      clearTimeout(t);
++    };
++  }, [mapOverlay.open]);
++
+   // Auto-refresh var 5:e minut + när tabben får fokus
+   useEffect(() => {
+@@
+-            {/* 2) Övriga “vanliga” event */}
+-            {nonSchool.map((event, idx) => {
+-              const { icon, color } = getEventStyle(event.summary);
+-              const startStr = event.start?.dateTime || event.start?.date || event.start;
+-              const borderColor = colorFor(event.source); // t.ex. 'skola24', 'ics', 'birthday'
+-              return (
+-                <div
+-                  key={`e-${idx}`}
+-                  className="event"
+-                  style={{ backgroundColor: color, borderLeft: `4px solid ${borderColor}` }}
+-                  title={event.source}
+-                >
+-                  <div className="event-meta">
+-                    {!event.summary?.startsWith('🎂') && (
+-                      <span className="event-time">{timeStr(startStr)}</span>
+-                    )}
+-                    {icon && <span className="event-icon">{icon}</span>}
+-                  </div>
+-                  <div className="event-title">{event.summary}</div>
+-                </div>
+-              );
+-            })}
++            {/* 2) Övriga “vanliga” event */}
++            {nonSchool.map((event, idx) => {
++              const { icon, color } = getEventStyle(event.summary);
++              const startStr = event.start?.dateTime || event.start?.date || event.start;
++              const borderColor = colorFor(event.source); // t.ex. 'skola24', 'ics', 'birthday'
++              return (
++                <div
++                  key={`e-${idx}`}
++                  className="event"
++                  style={{ backgroundColor: color, borderLeft: `4px solid ${borderColor}` }}
++                  title={event.source}
++                >
++                  <div className="event-meta">
++                    {!event.summary?.startsWith('🎂') && (
++                      <span className="event-time">{timeStr(startStr)}</span>
++                    )}
++                    {icon && <span className="event-icon">{icon}</span>}
++
++                    {event.location && (
++                      <button
++                        className="event-locbtn"
++                        title={event.location}
++                        onClick={(e) => {
++                          e.stopPropagation();
++                          setMapOverlay({
++                            open: true,
++                            title: event.summary || 'Plats',
++                            address: event.location,
++                            url: getMapsEmbedUrl(event.location),
++                            link: getMapsLink(event.location),
++                          });
++                        }}
++                        aria-label="Visa plats"
++                      >
++                        📍
++                      </button>
++                    )}
++                  </div>
++                  <div className="event-title">{event.summary}</div>
++                </div>
++              );
++            })}
+@@
+-      <div className="calendar-grid">{[...renderDays(), ...renderCells()]}</div>
++      <div className="calendar-grid">{[...renderDays(), ...renderCells()]}</div>
++      {mapOverlay.open && (
++        <div
++          className="map-overlay"
++          role="dialog"
++          aria-modal="true"
++          onClick={() =>
++            setMapOverlay({ open: false, title: '', address: '', url: '', link: '' })
++          }
++        >
++          <div className="map-dialog" onClick={(e) => e.stopPropagation()}>
++            <div className="map-header">
++              <div className="map-title" title={mapOverlay.address}>
++                📍 {mapOverlay.title}
++                {mapOverlay.address ? (
++                  <div className="map-address">{mapOverlay.address}</div>
++                ) : null}
++              </div>
++              <button
++                className="map-close"
++                onClick={() =>
++                  setMapOverlay({ open: false, title: '', address: '', url: '', link: '' })
++                }
++                aria-label="Stäng karta"
++              >
++                ✕
++              </button>
++            </div>
++            <div className="map-body">
++              <iframe
++                src={mapOverlay.url}
++                title="Karta"
++                style={{ width: '100%', height: '100%', border: 0 }}
++                referrerPolicy="no-referrer-when-downgrade"
++              />
++              <div className="map-side">
++                <div className="qr-title">Öppna i mobilen</div>
++                <img
++                  className="map-qr"
++                  alt="QR-kod till Google Maps"
++                  src={`https://chart.googleapis.com/chart?cht=qr&chs=220x220&chld=M|0&chl=${encodeURIComponent(
++                    mapOverlay.link
++                  )}`}
++                />
++                <div className="qr-hint">Skanna för att få vägbeskrivning</div>
++              </div>
++            </div>
++          </div>
++        </div>
++      )}

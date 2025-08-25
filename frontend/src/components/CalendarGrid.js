@@ -100,7 +100,53 @@ async function fetchDayInfo(dateStr) {
     return { isFlagDay: false, isRedDay: false, holidayName: null };
   }
 }
+const ymdLocal = (d) => {
+  const x = new Date(d);
+  return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
+};
+const isAllDay = (ev) => !!ev.start?.date;
+function expandEventToDays(ev) {
+  // Plocka ut start/end med fallbacks (tål både .date, .dateTime och rena strängar)
+  const startISO =
+    (isAllDay(ev) ? ev.start?.date : ev.start?.dateTime) ||
+    ev.start || null;
+  const endRaw =
+    (isAllDay(ev) ? ev.end?.date : ev.end?.dateTime) ||
+    ev.end || null;
 
+  if (!startISO) return [];                // utan start kan vi inte göra något
+  let start = new Date(
+    typeof startISO === 'string' && startISO.length === 10 ? `${startISO}T00:00:00` : startISO
+  );
+
+  // Om end saknas → anta samma dag som start
+  let end = endRaw
+    ? new Date(
+        typeof endRaw === 'string' && endRaw.length === 10 ? `${endRaw}T00:00:00` : endRaw
+      )
+    : new Date(start);
+
+  // All‑day: Google end.date är EXKLUSIV → visa t.o.m. dagen före
+  if (isAllDay(ev)) {
+    end.setDate(end.getDate() - 1);
+  } else {
+    // Timade events som slutar 00:00 ska inte visas på slutdagen
+    if (end.getHours() === 0 && end.getMinutes() === 0 && end.getSeconds() === 0) {
+      // men bara om end != start (annars ryker end)
+      if (end.getTime() !== start.getTime()) end.setDate(end.getDate() - 1);
+    }
+  }
+
+  if (end < start) end = new Date(start); // säkerställ minst en dag
+
+  const out = [];
+  const cur = new Date(start);
+  while (cur <= end) {
+    out.push({ ...ev, __instanceDate: ymdLocal(cur) });
+    cur.setDate(cur.getDate() + 1);
+  }
+  return out;
+};
 function CalendarGrid() {
   // === Theme via context (styr hela appen) ===
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -317,30 +363,45 @@ function CalendarGrid() {
     const periodEnd = addDays(periodStart, (weeksToShow() * 7) - 1);
 
     const fetchEvents = async () => {
-      try {
-        const response = await axios.get(`${API_BASE}/api/ai/events`);
-        const yStart = periodStart.getFullYear();
-        const yEnd = periodEnd.getFullYear();
-        const years = yStart === yEnd ? [yStart] : [yStart, yEnd];
+  try {
+    const response = await axios.get(`${API_BASE}/api/ai/events`);
+    const yStart = periodStart.getFullYear();
+    const yEnd = periodEnd.getFullYear();
+    const years = yStart === yEnd ? [yStart] : [yStart, yEnd];
 
-        const birthdayEvents = years.flatMap((year) =>
-          birthdays.map(({ date, name }) => {
-            const [day, month] = date.split('/');
-            const birthdayDate = new Date(year, parseInt(month) - 1, parseInt(day));
-            return {
-              summary: `🎂${name}`,
-              start: { dateTime: birthdayDate.toISOString() },
-              source: 'birthday',
-            };
-          })
-        );
+    // 🎂 Födelsedagar som riktiga all‑day (date/end.date — samma dag)
+    const birthdayEvents = years.flatMap((year) =>
+      birthdays.map(({ date, name }) => {
+        const [day, month] = date.split('/');
+        const ds = `${year}-${String(parseInt(month)).padStart(2, '0')}-${String(parseInt(day)).padStart(2, '0')}`;
+        return {
+          summary: `🎂${name}`,
+          start: { date: ds },
+          end:   { date: ds },
+          source: 'birthday',
+        };
+      })
+    );
 
-        setEvents([...response.data, ...birthdayEvents]);
-      } catch (error) {
-        console.error('Kunde inte hämta kalenderdata', error);
+    // Slå ihop & expandera alla events till en instans per dag
+    const merged = [...response.data, ...birthdayEvents];
+    const expanded = merged.flatMap(expandEventToDays);
+
+    // Sortera: dag → starttid
+    expanded.sort((a, b) => {
+      if (a.__instanceDate !== b.__instanceDate) {
+        return a.__instanceDate.localeCompare(b.__instanceDate);
       }
-    };
+      const ta = new Date(a.start?.dateTime || a.start?.date || a.__instanceDate).getTime();
+      const tb = new Date(b.start?.dateTime || b.start?.date || b.__instanceDate).getTime();
+      return ta - tb;
+    });
 
+    setEvents(expanded);
+  } catch (error) {
+    console.error('Kunde inte hämta kalenderdata', error);
+  }
+};
     const fetchWeather = async () => {
       try {
         const res = await axios.get(`${API_BASE}/api/weather`);
@@ -407,12 +468,8 @@ function CalendarGrid() {
         const today = isToday(date);
 
         // Filtrera dagens event
-        const eventsForDay = events.filter((event) => {
-          const s = event.start?.dateTime || event.start?.date || event.start;
-          if (!s) return false;
-          const d = new Date(typeof s === 'string' && s.length === 10 ? `${s}T12:00:00` : s);
-          return isSameDay(d, date);
-        });
+        const eventsForDay = events.filter((ev) => ev.__instanceDate === dateStr);
+
 
         // Dela upp i skola24-lektioner (som vi grupperar) vs övrigt
         const grouped = {};

@@ -150,6 +150,10 @@ run_menu_job.sh
 **/.env
 **/.env.*
 /frontend/.env
+!ai_config.json.example
+!birthdays.json.example
+!schedule.config.json.example
+!skola24.env.example
 # env & secrets
 .env
 .env.*

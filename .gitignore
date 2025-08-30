@@ -143,17 +143,17 @@ vite.config.ts.timestamp-*
 .secrets/
 .env
 .env.*
-!.env.example
+!backend/.env.example
 *.local.sh
 run_menu_job.sh
 /shopping-app/public/config.js
 **/.env
 **/.env.*
 /frontend/.env
-!ai_config.json.example
-!birthdays.json.example
-!schedule.config.json.example
-!skola24.env.example
+!.secrets/ai_config.json.example
+!.secrets/birthdays.json.example
+!.secrets/schedule.config.json.example
+!.secrets/skola24.env.example
 # env & secrets
 .env
 .env.*

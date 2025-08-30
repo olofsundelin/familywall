@@ -1,3 +1,4 @@
+/* Bas/typsnitt */
 :root, html, body, .app-container {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans",
                Ubuntu, Cantarell, "Helvetica Neue", Arial,
@@ -6,45 +7,58 @@
   font-weight: 400;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  -webkit-font-smoothing: antialiased; /* snyggare i Chromium */
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Sidan: kalender överst, paneler under */
+/* ===== App-layout: 4:2 mellan kalender och sidopanel ===== */
 .app-container {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  height: 100vh;
-  min-height: 0;            /* ⬅️ kritiskt i grid/flex */
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  gap: 12px;
+  min-height: 0; /* kritiskt i flex/grids */
 }
 
-/* Kalendern + tvåpanelsektion */
 .calendar-section {
+  flex: 4 1 0;             /* 4/6 av höjden */
   min-height: 0;
-  touch-action: pan-x;      /* swipe horisontellt */
+  display: flex;
 }
 
 .sidebar-section {
+  flex: 2 1 0;             /* 2/6 av höjden */
+  min-height: 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  min-height: 0;            /* ⬅️ kritiskt */
 }
 
-/* Wrapper-divarna i App runt komponenterna */
+/* Panelwrappers i sidokolumnen */
 .sidebar-section > .meal-plan,
 .sidebar-section > .shopping-list {
   display: grid;
-  min-height: 0;            /* ⬅️ kritiskt */
+  min-height: 0;
 }
 
-/* Själva scroll-containrarna inne i komponenterna */
-.meal-plan-container,
-.shopping-list-container {
-  height: 100%;             /* fyll wrappern */
-  min-height: 0;
-  max-height: 100%;
-  overflow: auto;           /* enable scroll */
-  touch-action: pan-y;      /* touch ska vara vertikal scroll */
+/* Scroll-containrar – innehåll scrollar, layouten håller 4:2 */
+.calendar-scroll,
+.panel-scroll,
+.drag-scroll {
+  overflow: auto;
+  min-height: 0;           /* stoppar barn från att tvinga höjd */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+}
+
+/* (valfritt) Stil för klockan i headern */
+.wall-clock { margin-right: 8px; }
+.calendar-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: auto;
+}
+
+/* Eliminera 1px spill i grid-höjd */
+.calendar-grid {
+  height: calc(100% - 1px);
 }

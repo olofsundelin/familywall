@@ -17,8 +17,16 @@ import axios from 'axios';
 import './CalendarGrid.css';
 import { ThemeContext } from './ThemeContext';
 import { useSpring, animated } from '@react-spring/web';
+import HeaderClock from './HeaderClock';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || '';
+const ymdInTz = (d, tz = 'Europe/Stockholm') => {
+  const dtf = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: tz, year: 'numeric', month: '2-digit', day: '2-digit'
+  });
+  const p = Object.fromEntries(dtf.formatToParts(d).map(x => [x.type, x.value]));
+  return `${p.year}-${p.month}-${p.day}`;
+};
 
 /** En hjälpare för att avgöra om något “ser ut som” en Skola24-lektion */
 const SUBJECT_WORDS = [
@@ -204,7 +212,30 @@ function CalendarGrid() {
     colorRules: [],
     classLabels: {},
   });
+  const MAX_DESC_CHARS = 140; // justera smakligt
+  const [expandedEvents, setExpandedEvents] = useState(() => new Set());
 
+  const instanceId = (ev) =>
+    (ev.id ? String(ev.id) : ev.summary) + '|' + (ev.__instanceDate || '');
+
+  const isEventExpanded = (ev) => expandedEvents.has(instanceId(ev));
+  const toggleEventExpand = (ev) => {
+    const id = instanceId(ev);
+    setExpandedEvents((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  };
+  const [birthdayOverride, setBirthdayOverride] = useState(() => {
+  return localStorage.getItem('birthdayOverride') === '1';
+});
+const toggleBirthdayOverride = () => {
+  const next = !birthdayOverride;
+  setBirthdayOverride(next);
+  localStorage.setItem('birthdayOverride', next ? '1' : '0');
+  alert(next ? '🎉 Födelsedagsläge PÅ (manuellt)' : 'Födelsedagsläge AV');
+};
   // Hämta schemakonfig (match-regler + etiketter)
   useEffect(() => {
     let mounted = true;
@@ -223,7 +254,7 @@ function CalendarGrid() {
       mounted = false;
     };
   }, []);
-
+   
   const getClassLabel = (code) =>
     scheduleCfg.classLabels?.[code] ?? (code === 'SCHEMA' ? 'Schema' : 'Skolschema');
 
@@ -251,7 +282,6 @@ function CalendarGrid() {
       mounted = false;
     };
   }, []);
-
   // Expandering för klassgrupper (skolschema)
   const [expandedGroups, setExpandedGroups] = useState({}); // key: YYYY-MM-DD|CLASS
 
@@ -474,7 +504,7 @@ function CalendarGrid() {
     const periodStart = startOfWeek(currentStartDate, { weekStartsOn: 1 });
     const cells = [];
     let day = new Date(periodStart);
-
+    const todayStr = ymdInTz(new Date());
     // Tål start som sträng eller objekt {dateTime} / {date}
     const timeStr = (val) => {
       if (!val) return '';
@@ -495,7 +525,7 @@ function CalendarGrid() {
       for (let i = 0; i < 7; i++) {
         const date = addDays(day, i);
         const dateStr = format(date, 'yyyy-MM-dd');
-        const today = isToday(date);
+        const today = ymdInTz(date) === todayStr;
 
         // Filtrera dagens event
         const eventsForDay = events.filter((ev) => ev.__instanceDate === dateStr);
@@ -606,7 +636,7 @@ function CalendarGrid() {
                       <span className="event-time">
                         {timeStr(first.start)}–{timeStr(last.end || last.start)}
                       </span>
-                      {anyIdrott && <span className="event-icon" style={{ marginLeft: 6 }}>🩳</span>}
+                      {anyIdrott && <span className="event-icon" style={{ marginLeft: 1 }}>🩳</span>}
                     </div>
                     <div className="event-title">
                       {label} ({lessons.length}) {isExpanded(klassKey) ? '▴' : '▾'}
@@ -640,13 +670,21 @@ function CalendarGrid() {
   const { icon, color } = getEventStyle(event.summary);
   const startStr = event.start?.dateTime || event.start?.date || event.start;
   const borderColor = colorFor(event.source); // t.ex. 'skola24', 'ics', 'birthday'
+  const desc = event.description || '';
+  const long = desc.length > MAX_DESC_CHARS;
+  const expanded = isEventExpanded(event);
+  const shownText = expanded ? desc : desc.slice(0, MAX_DESC_CHARS) + (long ? '…' : '');
   return (
     <div
-      key={`e-${idx}`}
-      className="event"
-      style={{ backgroundColor: color, borderLeft: `4px solid ${borderColor}` }}
-      title={event.source}
-    >
+    key={`e-${idx}`}
+    className={`event ${isEventExpanded(event) ? 'expanded' : ''}`}
+    style={{ backgroundColor: color, borderLeft: `4px solid ${borderColor}` }}
+    title={event.source}
+    onClick={(e) => {
+      e.stopPropagation();
+      toggleEventExpand(event);
+    }}
+  >
       <div className="event-meta">
         {!event.summary?.startsWith('🎂') && (
           <span className="event-time">{timeStr(startStr)}</span>
@@ -672,6 +710,20 @@ function CalendarGrid() {
       </div>
 
       <div className="event-title">{event.summary}</div>
+      {desc && (
+  <div className="event-desc">
+    {shownText}
+    {long && (
+      <button
+        className="event-expandbtn"
+        onClick={(e) => { e.stopPropagation(); toggleEventExpand(event); }}
+        aria-expanded={expanded}
+      >
+        {expanded ? 'Visa mindre' : 'Visa mer'}
+      </button>
+    )}
+  </div>
+)}
     </div>
   );
 })}
@@ -795,6 +847,7 @@ function CalendarGrid() {
 
         {/* Höger del */}
         <div className="month-actions">
+          <HeaderClock className="wall-clock" />
           <div
             className="theme-toggle"
             onClick={toggleTheme}
@@ -865,6 +918,26 @@ function CalendarGrid() {
                     Aktivera närvarosensor (kamera)
                   </button>
                 )}
+                <button
+  onClick={() => { toggleBirthdayOverride(); setShowMenu(false); }}
+>
+  {birthdayOverride ? 'Stäng födelsedagsläge' : 'Starta födelsedagsläge (test)'}
+</button>
+                <button
+  onClick={async () => {
+    try {
+      const mod = await import("canvas-confetti");
+      const confetti = mod?.default ?? mod;
+      confetti({ particleCount: 180, spread: 110, origin: { y: 0.55, x: 0.5 }, zIndex: 2147483647 });
+    } catch (e) {
+      console.error("Kunde inte ladda canvas-confetti", e);
+      alert("Kunde inte ladda konfetti-modulen.");
+    }
+    setShowMenu(false);
+  }}
+>
+  Testa konfetti nu
+</button>
               </div>
             )}
           </div>

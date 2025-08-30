@@ -125,8 +125,14 @@ function useWeatherNow(apiBase) {
 }
 
 /* -------------------- Huvudkomponent -------------------- */
-export default function SlideshowOverlay({ presenceEnabled, apiBase }) {
+export default function SlideshowOverlay({
+  presenceEnabled,
+  apiBase,
+  onMotionChange = () => {},
+}) {
   const { idle, reset } = useIdle();
+
+  // Din kamerahook: ger "present" (rörelse/närvaro).
   const { present } = usePresenceWithCamera({ enabled: presenceEnabled });
 
   const [slides, setSlides] = useState([]);
@@ -146,6 +152,16 @@ export default function SlideshowOverlay({ presenceEnabled, apiBase }) {
   useEffect(() => { log("presenceEnabled ändrad", presenceEnabled); }, [presenceEnabled]);
   useEffect(() => { log("present ändrad (kamerahook)", present); }, [present]);
   useEffect(() => { log("idle ändrad", idle); }, [idle]);
+
+  // 🔔 NYTT: bubbla upp rörelsestatus till App för konfetti mm
+  useEffect(() => {
+    onMotionChange(!!present);
+  }, [present, onMotionChange]);
+
+  // 🔔 NYTT: om sensorn stängs av – nollställ rörelse
+  useEffect(() => {
+    if (!presenceEnabled) onMotionChange(false);
+  }, [presenceEnabled, onMotionChange]);
 
   // visa/dölj overlay
   useEffect(() => {
@@ -223,7 +239,7 @@ export default function SlideshowOverlay({ presenceEnabled, apiBase }) {
     return () => events.forEach((e) => window.removeEventListener(e, close));
   }, [visible, reset]);
 
-  // förladda nästa slide (tyst loggning – bara vid behov)
+  // förladda nästa slide
   useEffect(() => {
     if (!visible || slides.length === 0) return;
     const nextSlide = slides[(idx + 1) % slides.length];

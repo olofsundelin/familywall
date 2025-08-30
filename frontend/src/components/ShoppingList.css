@@ -13,7 +13,7 @@
 }
 
 .shopping-list h3 {
-  font-size: 1.1rem; /* samma som MealPlan */
+  font-size: 1.0rem; /* samma som MealPlan */
   margin-bottom: 0.5rem;
   border-bottom: 1px solid var(--border);
   padding-bottom: 0.25rem;

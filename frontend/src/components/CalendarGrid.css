@@ -1,22 +1,41 @@
 /* =========================
-   Layout
+   CalendarGrid.css — clean
    ========================= */
 
+/* Fallback-färger om inte teman satt */
+:root {
+  --bg: #111;
+  --card: #1a1a1a;
+  --border: #2a2a2a;
+  --text: #fff;
+
+  /* Gridmått */
+  --cal-header-h: 2.5rem;   /* höjd på kolumnrubrikraden */
+  --cal-col-gap: 0.5rem;
+  --cal-row-gap: 1rem;
+}
+
+/* =========================
+   Container
+   ========================= */
 .calendar-container {
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 0.5rem;
+  min-height: 0;
   box-sizing: border-box;
+
+  /* Ta bort vänster “glapp” */
+  padding: 0.5rem;
+
   background: var(--bg);
   color: var(--text);
   touch-action: pan-x;
 }
 
 /* =========================
-   Månadshuvud
+   Huvud / Header
    ========================= */
-
 .calendar-month-header {
   display: flex;
   align-items: center;
@@ -24,409 +43,228 @@
   background: var(--card);
   border-bottom: 1px solid var(--border);
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 0.25rem;
+  padding: 0.25rem 0.5rem;
 }
 
 .nav-section { display: flex; align-items: center; gap: 0.5rem; }
-.right-section { margin-left: auto; display: flex; align-items: center; gap: 0.5rem; }
+.month-actions { display: flex; align-items: center; gap: 0.5rem; }
 
-.calendar-month-header button {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: var(--text);
+/* Tema-toggle */
+.theme-toggle {
+  width: 56px; height: 28px; border-radius: 20px; padding: 3px;
+  background: var(--card); position: relative; cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--border);
+  display: inline-flex; align-items: center; justify-content: space-between;
 }
+.theme-toggle__knob {
+  width: 22px; height: 22px; border-radius: 999px; background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+}
+.theme-toggle__icon { font-size: 14px; line-height: 1; }
+
+/* Meny-knapp och dropdown */
+.menu-container { position: relative; display: inline-block; }
+.menu-button {
+  background: none; border: none; cursor: pointer; padding: 0 0.5rem;
+  width: 2rem; height: 2rem; display: grid; place-items: center;
+}
+.menu-icon { font-size: 1.5rem; line-height: 1; }
+.menu-dropdown {
+  position: absolute; top: 2.5rem; right: 0; z-index: 1000;
+  min-width: 240px;
+  background: var(--card); color: var(--text); border: 1px solid var(--border);
+  box-shadow: 0 4px 12px rgba(0,0,0,.35);
+}
+.menu-dropdown button {
+  display: block; width: 100%; font-size: 1rem; background: none;
+  color: var(--text); border: none; text-align: left;
+  padding: 0.6rem 0.9rem; cursor: pointer;
+}
+.menu-dropdown button:hover { background: var(--bg); }
 
 /* =========================
-   Gridstruktur
+   Gridstruktur (exakt höjd)
    ========================= */
+.calendar-grid,
+.calendar-cell { box-sizing: border-box; }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: min-content repeat(7, 1fr);
-  grid-template-rows: 2.5rem repeat(3, 1fr); /* 3 veckor + header */
-  row-gap: 1.0rem;
-  column-gap: 0.5rem;
+
+  /* Höjd = 100% minus header och row-gaps, delat på 3 veckor */
+  grid-template-rows:
+    var(--cal-header-h)
+    repeat(3, minmax(0, calc(
+      (100% - var(--cal-header-h) - (3 * var(--cal-row-gap))) / 3
+    )));
+
+  column-gap: var(--cal-col-gap);
+  row-gap: var(--cal-row-gap);
+
+  /* Fyll föräldern och undvik egen scrollbar */
+  flex: 1 1 auto;
+  min-height: 0;
   height: 100%;
+  overflow: hidden;
 }
 
 /* =========================
    Celler
    ========================= */
-
 .calendar-cell {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+
   background: var(--card);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: 4px;
+
   padding: 0.25rem;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
+
   height: 100%;
   min-height: 0;
   overflow: hidden;
+
+  outline: 0;
+  box-shadow: none;
 }
-
-.calendar-cell.outside { opacity: 0.4; }
-.calendar-cell.today { outline: 2px solid var(--text); outline-offset: -2px; }
-
 .calendar-cell.header.small {
-  font-weight: bold;
+  font-weight: 700;
   background: var(--card);
   color: var(--text);
   border-radius: 6px;
   padding: 0.25rem;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
+}
+.calendar-cell.outside { opacity: 0.45; }
+
+/* Röd dag: bara bakgrund, ingen extra kant */
+.calendar-cell.red-day { background-color: rgba(236, 79, 79, 0.22); }
+
+/* Idag: tydlig inre vit kant – stabil i Chromium */
+.calendar-cell.today::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 2px var(--text, #fff);
+}
+/* Idag + röd dag: samma markering */
+.calendar-cell.red-day.today::after { box-shadow: inset 0 0 0 2px var(--text, #fff); }
+
+.week-number {
+  font-weight: 700;
+  text-align: center;
+  display: grid; place-items: center;
+  font-size: 1.1rem;
 }
 
-/* =========================
-   Datum & innehåll
-   ========================= */
-
 .calendar-date {
-  font-weight: bold;
+  font-weight: 700;
   font-size: 1.1rem;
   margin-bottom: 0.35rem;
   color: var(--text);
   flex-shrink: 0;
 }
 
-/* =========================
-   Eventer
-   ========================= */
+.holiday-name { font-size: 0.85em; margin-top: 2px; opacity: .9; }
 
+/* =========================
+   Events
+   ========================= */
 .event {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
   font-size: 1rem;
   margin-bottom: 0.15rem;
+
   background: var(--card);
   color: var(--text);
-  padding: 6px 8px;
+  padding: 6px 6px;
   border-radius: 4px;
   word-break: break-word;
+
   flex-shrink: 1;
   overflow: hidden;
 }
-
-.event-meta { display: flex; align-items: center; gap: 0.3rem; margin-bottom: 0.1rem; }
-.event-time { font-weight: bold; margin-bottom: 0.1rem; }
+.event-meta {
+  display: flex; align-items: center; gap: 0.3rem;
+  margin-bottom: 0.1rem;
+}
+.event-time { font-weight: 400; margin-bottom: 0.1rem; }
 .event-title { white-space: normal; }
-.event-icon { font-size: 1rem; margin-right: 0.4em; }
+.event-icon { font-size: 1rem; }
 
-/* =========================
-   Ikoner
-   ========================= */
-
-.bedtime-icon {
-  font-size: 1.2rem;
-  margin-left: 0.3rem;
-  vertical-align: middle;
-  cursor: pointer;
-  user-select: none;
-}
-
-/* =========================
-   Veckonummer
-   ========================= */
-
-.week-number {
-  font-weight: bold;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-}
-
-/* =========================
-   Flagg- & helg-stilar
-   ========================= */
-
-.calendar-cell.red-day { background-color: rgba(236, 79, 79, 0.322); }
-.holiday-name { font-size: 0.8em; margin-top: 2px; }
-.flag-icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; margin-left: 4px; }
-
-.flag-icon, .weather-icon, .bedtime-icon {
-  font-size: 1.2em; line-height: 1; vertical-align: middle; margin-left: 0.2em;
-}
-
-/* =========================
-   Meny
-   ========================= */
-
-.menu-container { position: relative; display: inline-block; }
-.menu-button { background: none; border: none; cursor: pointer; padding: 0 0.5rem; width: 2rem; height: 2rem; }
-.menu-icon { font-size: 1.5rem; line-height: 1; }
-
-.menu-dropdown {
-  position: absolute;
-  font-size: 0.9rem;
-  top: 2.5rem;
-  right: 0;
-  background: var(--card);
-  color: var(--text);
-  border: 1px solid var(--border);
-  z-index: 1000;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-.menu-dropdown button {
-  display: block;
-  width: 100%;
-  font-size: 1rem;
-  background: none;
-  color: var(--text);
-  border: none;
-  text-align: left;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
-
-.menu-dropdown button:hover { background: var(--bg); }
-
-/* =========================
-   Tema-toggle
-   ========================= */
-
-.theme-toggle {
-  width: 56px;
-  height: 28px;
-  border-radius: 20px;
-  padding: 3px;
-  background: var(--card);
-  position: relative;
-  cursor: pointer;
-  box-shadow: inset 0 0 0 1px var(--border);
-  display: inline-flex;
-  align-items: center;
-}
-
-.theme-toggle__knob {
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.theme-toggle__icon { font-size: 14px; line-height: 1; }
-
-/* =========================
-   Respons
-   ========================= */
-
-@media (max-width: 600px) {
-  .calendar-grid { grid-template-columns: min-content repeat(7, 1fr); }
-  .calendar-cell { font-size: 1.1rem; padding: 0.5rem; }
-  .calendar-cell.header.small { font-size: 0.9rem; padding: 0.4rem; }
-}
-
-/* Barn-färger */
-:root {
-  --school-a: #5e60ce;
-  --school-b: #2a9d8f;
-}
-
-/* ==========================================================
-   Tillägg för MAXIMERAT HELSKÄRMSLÄGE (behåller din design)
-   ========================================================== */
-
-/* Själva helskärmscontainern */
-.calendar-container.maximized {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  background: var(--bg);
-  padding: 0.5rem; /* matcha din befintliga padding */
-}
-
-/* Sticky header i helskärm så navigering alltid syns */
-.calendar-container.maximized .calendar-month-header {
-  position: sticky;
-  top: 0;
-  z-index: 5;
-}
-
-/* Visa 6 veckor i helskärm (3 i normalvy enligt din grid) */
-.calendar-container.maximized .calendar-grid {
-  grid-template-rows: 2.5rem repeat(6, 1fr);
-}
-
-/* Knappstil för Maximera/Minimera (kopplad till JS-komponenten) */
-.maximize-button {
-  border: 1px solid var(--border);
-  background: var(--card);
-  border-radius: 8px;
-  padding: 0.25rem 0.6rem;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
-.maximize-button[aria-pressed="true"] {
-  box-shadow: inset 0 0 0 2px var(--border);
-}
-
-/* Döljer lång månadsetikett i helskärm på små skärmar för mer plats */
-@media (max-width: 820px) {
-  .calendar-container.maximized .month-label { display: none; }
-}
-
-/* Light/Dark-anpassning för helskärm (återanvänder dina variabler) */
-@media (prefers-color-scheme: dark) {
-  .calendar-container.maximized { background: var(--bg); }
-}
-.calendarSection {
-  /* Tillåt vertikal scroll utan att browsern ”kapar” gesten */
-  touch-action: pan-y;
-  /* Gör klickyta generös och tydlig */
-  outline: none;
-  /* (frivilligt) min höjd så hela ytan känns ”svepbar” */
-  min-height: 60vh;
-  user-select: none;
-  cursor: grab;
-}
-.calendarSection:active {
-  cursor: grabbing;
-}
-.event-lessons {               /* container för listan */
-  display: grid;
-  grid-template-columns: 48px 1fr; /* tidskolumn, titelkolumn */
-  column-gap: 4px;                 /* MINSKA denna för mindre mellanrum */
-}
-
-.event-lessons .lesson-line {  /* en rad (tid + titel) */
-  display: contents;           /* grid-barn direkt i grid */
-}
-
+/* Skolschema kompakt */
+.event-lessons { display: grid; grid-template-columns: 48px 1fr; column-gap: 4px; }
+.event-lessons .lesson-line { display: contents; }
 .event-lessons .time {
-  text-align: right;
-  opacity: .85;
-  font-variant-numeric: tabular-nums; /* tight och fin numerrad */
-  /* vill du ha ännu tätare: minska “48px” ovan till t.ex. 44px */
+  text-align: right; opacity: .85; font-variant-numeric: tabular-nums;
 }
 
-.event-lessons .title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-/* Listan med rader (tid + titel) */
-.lessons-compact {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;                 /* ← MINSKA/ÖKA mellanrummet mellan raderna */
-}
-
-/* En rad */
-.lessons-compact .lesson-row {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;                 /* ← MINSKA/ÖKA mellan tid och titel */
-  line-height: 1.05;        /* ← tätare radavstånd */
-}
-
-/* Tidskolumn */
+.lessons-compact { display: flex; flex-direction: column; gap: 2px; }
+.lessons-compact .lesson-row { display: flex; align-items: baseline; gap: 6px; line-height: 1.05; }
 .lessons-compact .time {
-  width: 52px;              /* ← MINSKA för ännu tätare, t.ex. 46–50 */
-  flex: 0 0 auto;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;      /* ingen radbrytning i tiden */
-  opacity: .85;
+  width: 52px; flex: 0 0 auto; text-align: right; font-variant-numeric: tabular-nums;
+  white-space: nowrap; opacity: .85;
 }
-
-/* Titelkolumn */
 .lessons-compact .title {
-  min-width: 0;             /* viktigt i flex för ellipsis */
-  white-space: nowrap;      /* hindra radbrytning per tecken */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-break: keep-all;     /* inga hårda bryt mitt i ord */
+  min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  word-break: keep-all;
 }
-.event-locbtn {
-  margin-left: 1px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1em;
-  line-height: 1;
-  opacity: 0.9;
-}
-.event-locbtn:hover { opacity: 1; }
 
+/* =========================
+   Småikoner / flaggor
+   ========================= */
+.bedtime-icon { font-size: 1.2rem; margin-left: 0.3rem; vertical-align: middle; cursor: pointer; user-select: none; }
+.flag-icon { width: 1em; height: 1em; display: inline-block; vertical-align: middle; margin-left: 4px; }
+.weather-icon { font-size: 1.2em; vertical-align: middle; margin-left: 0.2em; }
+
+/* =========================
+   Karta (overlay)
+   ========================= */
 .map-overlay {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: rgba(0,0,0,.55);
   z-index: 2000;
-  display: grid;
-  place-items: center;
+  display: grid; place-items: center;
   padding: 4vw;
 }
-
 .map-dialog {
   width: min(1100px, 92vw);
   height: min(720px, 75vh);
   background: var(--bg, #1f1f1f);
-  color: var(--fg, #fff);
+  color: var(--text, #fff);
   border-radius: 14px;
   box-shadow: 0 10px 40px rgba(0,0,0,.5);
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: grid; grid-template-rows: auto 1fr;
   overflow: hidden;
 }
-
 .map-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 12px;
-  border-bottom: 1px solid rgba(255,255,255,.1);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.1);
 }
-
-.map-title {
-  font-weight: 600;
-  font-size: 1rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.map-close {
-  background: transparent;
-  border: none;
-  font-size: 1.1rem;
-  cursor: pointer;
-  color: inherit;
-}
-
-.map-body {
-  display: grid;
-  grid-template-columns: 1fr 260px; /* karta | QR */
-  width: 100%;
-  height: 100%;
-}
-
+.map-title { font-weight: 600; font-size: 1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.map-close { background: transparent; border: none; font-size: 1.1rem; cursor: pointer; color: inherit; }
+.map-body { display: grid; grid-template-columns: 1fr 260px; width: 100%; height: 100%; }
 .map-side {
-  display: grid;
-  place-items: center;
-  padding: 10px;
+  display: grid; place-items: center; padding: 10px;
   background: rgba(255,255,255,.03);
   border-left: 1px solid rgba(255,255,255,.08);
 }
-
 .qr-title { font-weight: 600; margin-bottom: 6px; }
 .map-qr { width: 220px; height: 220px; }
 .qr-hint { font-size: .85rem; opacity: .8; text-align: center; }
@@ -435,3 +273,99 @@
   .map-body { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
   .map-side { border-left: none; border-top: 1px solid rgba(255,255,255,.08); }
 }
+
+/* =========================
+   Helskärmsläge
+   ========================= */
+.calendar-container.maximized {
+  position: fixed; inset: 0; z-index: 1000;
+  background: var(--bg);
+  padding: 0.5rem;
+}
+.calendar-container.maximized .calendar-month-header {
+  position: sticky; top: 0; z-index: 5;
+}
+.calendar-container.maximized .calendar-grid {
+  grid-template-rows: var(--cal-header-h) repeat(6, minmax(0, 1fr));
+}
+.maximize-button {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 8px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.maximize-button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--border); }
+
+@media (max-width: 820px) {
+  .calendar-container.maximized .month-label { display: none; }
+}
+
+/* =========================
+   Respons (små skärmar)
+   ========================= */
+@media (max-width: 600px) {
+  .calendar-cell { font-size: 1.05rem; padding: 0.5rem; }
+  .calendar-cell.header.small { font-size: 0.95rem; padding: 0.4rem; }
+}
+
+/* =========================
+   Ikoner & knappar – färg & transparens
+   (lägg sist så dessa vinner)
+   ========================= */
+.calendar-month-header .theme-toggle__icon,
+.calendar-month-header .menu-icon,
+.calendar-date .weather-icon,
+.calendar-date .bedtime-icon,
+.calendar-date .flag-icon,
+.calendar-date .flag-icon img,
+.event .event-icon {
+  color: var(--text) !important;
+  background: transparent !important;
+}
+
+/* Rensa UA-stilar på knappar som visar ikoner/textsymboler */
+.calendar-month-header .month-nav button,   /* veckopilar + "Idag" */
+.calendar-month-header .menu-button,        /* admin-menyn (⋯) */
+.calendar-month-header .maximize-button,    /* helskärm */
+.event .event-locbtn {                       /* platsknapp i event */
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent !important;
+  border: none !important;
+  color: var(--text) !important;
+  padding: 0.1rem 0.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Finputs för focus */
+.event .event-locbtn:focus-visible,
+.calendar-month-header .month-nav button:focus-visible,
+.calendar-month-header .menu-button:focus-visible {
+  outline: 2px solid var(--border);
+  outline-offset: 2px;
+}
+/* ===== Stabil markering av "idag" (Chromium-safe) ===== */
+.calendar-cell {
+  position: relative;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Röd dag: endast bakgrund, ingen kant */
+.calendar-cell.red-day { background-color: rgba(236, 79, 79, 0.22); }
+
+/* Idag: rita vit (textfärgad) inre kant med pseudo-element */
+.calendar-cell.today::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 4px;             /* matcha cellens radius */
+  box-shadow: inset 0 0 0 2px var(--text, #fff);
+}
+
+/* Om idag också är röd dag: behåll samma kant (ingen extra stil) */
+.calendar-cell.red-day.today::after { box-shadow: inset 0 0 0 2px var(--text, #fff); }

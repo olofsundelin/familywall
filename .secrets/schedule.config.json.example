@@ -1,0 +1,12 @@
+{
+  "colorRules": [
+    { "includes": "CLASS_A",   "colorVar": "--school-a" },
+    { "includes": "CLASS_B", "colorVar": "--school-b" },
+    { "includes": "STUDENT_A",  "colorVar": "--school-a" },
+    { "includes": "STUDENT_B",  "colorVar": "--school-b" }
+  ],
+  "classLabels": {
+    "CLASS_A":   "STUDENT_As schema",
+    "CLASS_B": "STUDENT_Bs schema"
+  }
+}

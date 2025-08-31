@@ -254,6 +254,32 @@ const toggleBirthdayOverride = () => {
       mounted = false;
     };
   }, []);
+  const [isLandscape, setIsLandscape] = useState(() =>
+  typeof window !== 'undefined' &&
+  window.matchMedia &&
+  window.matchMedia('(orientation: landscape)').matches
+);
+useEffect(() => {
+  if (!window.matchMedia) return;
+  const mq = window.matchMedia('(orientation: landscape)');
+  const onChange = (e) => setIsLandscape(e.matches);
+  mq.addEventListener ? mq.addEventListener('change', onChange) : mq.addListener(onChange);
+  return () => {
+    mq.removeEventListener ? mq.removeEventListener('change', onChange) : mq.removeListener(onChange);
+  };
+}, []);
+const visibleLimit = () => (isLandscape ? 2 : 4);
+
+// Expandering per dag (Set av datumsträngar)
+const [expandedDays, setExpandedDays] = useState(() => new Set());
+const isDayExpanded = (dateStr) => expandedDays.has(dateStr);
+const toggleDayExpand = (dateStr) => {
+  setExpandedDays(prev => {
+    const next = new Set(prev);
+    next.has(dateStr) ? next.delete(dateStr) : next.add(dateStr);
+    return next;
+  });
+};
    
   const getClassLabel = (code) =>
     scheduleCfg.classLabels?.[code] ?? (code === 'SCHEMA' ? 'Schema' : 'Skolschema');

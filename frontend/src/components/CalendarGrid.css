@@ -8,11 +8,13 @@
   --card: #1a1a1a;
   --border: #2a2a2a;
   --text: #fff;
+  --school-a: #5e60ce;
+  --school-b: #2a9d8f;
 
   /* Gridmått */
   --cal-header-h: 2.5rem;   /* höjd på kolumnrubrikraden */
-  --cal-col-gap: 0.5rem;
-  --cal-row-gap: 1rem;
+  --cal-col-gap: 0.25rem;
+  --cal-row-gap: 0.25rem;
 }
 
 /* =========================
@@ -26,7 +28,7 @@
   box-sizing: border-box;
 
   /* Ta bort vänster “glapp” */
-  padding: 0.5rem;
+  padding: 0.2rem;
 
   background: var(--bg);
   color: var(--text);
@@ -205,8 +207,21 @@
   margin-bottom: 0.1rem;
 }
 .event-time { font-weight: 400; margin-bottom: 0.1rem; }
-.event-title { white-space: normal; }
+.event-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* Chrome/Edge/Safari */
+  line-clamp: 2;         /* framtidssäkert */
+  overflow: hidden;
+  white-space: normal;
+  overflow-wrap: anywhere; /* bryt långa ord */
+}
 .event-icon { font-size: 1rem; }
+.event.expanded .event-title {
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  display: block;
+}
 
 /* Skolschema kompakt */
 .event-lessons { display: grid; grid-template-columns: 48px 1fr; column-gap: 4px; }

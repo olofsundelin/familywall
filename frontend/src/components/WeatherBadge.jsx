@@ -13,7 +13,7 @@ export default function WeatherBadge({ code, temp }) {
       backdropFilter: "blur(2px)"
     }}>
       <WeatherIcon code={code} size={22} />
-      <span style={{ fontSize: 18, lineHeight: 1 }}>{temp}°</span>
+      <span style={{ fontSize: 32, lineHeight: 1 }}>{temp}°</span>
     </div>
   );
 }

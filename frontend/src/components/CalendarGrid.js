@@ -18,6 +18,7 @@ import './CalendarGrid.css';
 import { ThemeContext } from './ThemeContext';
 import { useSpring, animated } from '@react-spring/web';
 import HeaderClock from './HeaderClock';
+import WeatherIcon from './WeatherIcon';
 
 const API_BASE = process.env.REACT_APP_API_BASE_URL || '';
 const ymdInTz = (d, tz = 'Europe/Stockholm') => {
@@ -593,8 +594,7 @@ const toggleDayExpand = (dateStr) => {
         const baseDate = bedtimeBaseDate;
         const daysSince = Math.floor((date - baseDate) / (1000 * 60 * 60 * 24));
         const bedtime = bedtimeOverrides[dateStr] || (daysSince % 2 === 0 ? 'man' : 'woman');
-        const weatherCode = weatherData[dateStr];
-        const weatherIcon = weatherIcons[weatherCode];
+        const weatherCode = Number(weatherData[dateStr]); // säkra att det är ett tal 1–27
         const dayInfo = dayInfoMap[dateStr] || {};
 
         const toggleExpand = (klassKey) => {
@@ -614,8 +614,8 @@ const toggleDayExpand = (dateStr) => {
                 {bedtime === 'man' ? '👨‍🍼' : '👩‍🍼'}
               </span>
               <span className="weather-icon" title="Väder">
-                {weatherIcon}
-              </span>
+  {weatherCode ? <WeatherIcon code={weatherCode} size={20} /> : null}
+</span>
               {dayInfo.isFlagDay && (
                 <span className="flag-icon" title={dayInfo.flagReason}>
                   <img

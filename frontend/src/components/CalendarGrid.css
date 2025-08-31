@@ -384,3 +384,10 @@
 
 /* Om idag också är röd dag: behåll samma kant (ingen extra stil) */
 .calendar-cell.red-day.today::after { box-shadow: inset 0 0 0 2px var(--text, #fff); }
+.weather-icon {
+  display: inline-flex;
+  vertical-align: middle;
+  line-height: 1;
+  margin-left: 4px;         /* samma spacing som idag */
+  color: var(--text, #fff); /* WeatherIcon följer currentColor */
+}

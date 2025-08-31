@@ -7,7 +7,7 @@
 }
 .meal-plan,
 .shopping-list {
-  padding: 0.5rem;
+  padding: 0.25rem;
   background: var(--card);
   color: var(--text);
   height: 100%;
